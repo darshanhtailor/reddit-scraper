@@ -61,13 +61,6 @@ def parser(html, parsed_data, itr):
 
     parsed_data += curr
 
-        # post = {
-            
-        #    
-        #     'media_url': tags[18].text
-        # }
-        # parsed_data.append(post)
-
 
 def next_url(html):
     soup = BeautifulSoup(html, 'html.parser')
