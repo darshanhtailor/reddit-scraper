@@ -37,6 +37,13 @@ def parser(html, parsed_data, itr):
         curr[i]['comments'] = comment.text
         i += 1
 
+    i = 0
+    authors = soup.find_all(class_='search-author')
+    for author in authors:
+        tags = author.find_all()
+        curr[i]['author'] = tags[0].text
+        i += 1
+
     ignore_subreddit_searches = 0
     i = 0
     times = soup.find_all(class_='search-time')
@@ -48,15 +55,15 @@ def parser(html, parsed_data, itr):
             curr[i]['time'] = tags[0].get('datetime')
             i += 1
 
-    ignore_subreddit_searches = 0
-    i = 0
-    mediaLinks = soup.find_all(class_='search-link')
-    for mediaLink in mediaLinks:
-        if itr == 1 and ignore_subreddit_searches < 3:
-            ignore_subreddit_searches += 1
-        else:
-            curr[i]['media_url'] = mediaLink.text
-            i += 1
+    # ignore_subreddit_searches = 0
+    # i = 0
+    # mediaLinks = soup.find_all(class_='search-link')
+    # for mediaLink in mediaLinks:
+    #     if itr == 1 and ignore_subreddit_searches < 3:
+    #         ignore_subreddit_searches += 1
+    #     else:
+    #         curr[i]['media_url'] = mediaLink.text
+    #         i += 1
     
 
     parsed_data += curr
@@ -72,16 +79,16 @@ def next_url(html):
 
     return tags[0].get('href')
 
-
+# oppenheimer, cillian murphy, academy award, christopher nolan, oscar, robert downey
 site = 'https://old.reddit.com'
-q = 'ipl'
+q = 'robert+downey'
 sort = 'top'
-t = 'month'
+t = 'week'
 url = f'{site}/search/?q={q}&sort={sort}&t={t}'
 
 parsed_data = []
 
-for i in range(5):
+for i in range(3):
     html = scraper(url)
     parser(html, parsed_data, i+1)
     url = next_url(html)
@@ -89,10 +96,10 @@ for i in range(5):
     time.sleep(2)
 
 
-field_names = ['title', 'url', 'points', 'comments', 'time', 'media_url']
+field_names = ['title', 'url', 'points', 'comments', 'author', 'time']
 file_name = 'reddit_data.csv'
 
-with open(file_name, mode='w', newline='', encoding='utf-8') as file:
+with open(file_name, mode='a', newline='', encoding='utf-8') as file:
     writer = csv.DictWriter(file, fieldnames=field_names)
     writer.writeheader()
     writer.writerows(parsed_data)
