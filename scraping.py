@@ -81,7 +81,7 @@ def next_url(html):
 
 # oppenheimer, cillian murphy, academy award, christopher nolan, oscar, robert downey
 site = 'https://old.reddit.com'
-q = 'robert+downey'
+q = 'oscar'
 sort = 'top'
 t = 'week'
 url = f'{site}/search/?q={q}&sort={sort}&t={t}'
